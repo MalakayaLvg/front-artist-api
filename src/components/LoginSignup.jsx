@@ -7,9 +7,9 @@ const LoginSignup = () => {
 
     return(
         <>
-            <div className="main-container px-5">
+            <div className="main-container">
                 <div className="header">
-                    <h1>{action}</h1>
+                    <h1 className="title">{action}</h1>
                     <div className="underline"></div>
                 </div>
                 <div className="inputs">

@@ -1,11 +1,12 @@
 import './App.css'
-import LoginSignup from "./components/LoginSignup.jsx";
+import Artists from "./pages/Artists.jsx";
 
 function App() {
 
   return (
     <>
-        <LoginSignup />
+        <h1>api artist</h1>
+        <Artists />
     </>
   )
 }
