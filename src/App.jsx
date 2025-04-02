@@ -1,14 +1,14 @@
-import './App.css'
-import Artists from "./pages/Artists.jsx";
+import { Outlet } from 'react-router-dom';
+import HomeButton from "./components/HomeButton.jsx";
+import './App.css';
 
 function App() {
-
-  return (
-    <>
-        <h1>api artist</h1>
-        <Artists />
-    </>
-  )
+    return (
+        <div className="app-container">
+            <HomeButton />
+            <Outlet />
+        </div>
+    );
 }
 
-export default App
+export default App;

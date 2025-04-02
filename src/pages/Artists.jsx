@@ -72,7 +72,6 @@ const Artists = () => {
                 <button className="release-plus-button" onClick={toggleCreateForm}>ajouter<i className="ms-2 bi bi-plus"></i></button>
             </div>
             { showCreateForm && (
-                <div className="create-artist-container">
                     <form className="create-artist-form">
                         <h2>Creer un nouvel artiste</h2>
                         <label >Name</label>
@@ -94,7 +93,6 @@ const Artists = () => {
                             <button onClick={createArtist}>Creer</button>
                         </div>
                     </form>
-                </div>
             )}
 
             <ul>

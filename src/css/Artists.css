@@ -8,7 +8,7 @@
 }
 
 .li-artist:hover{
-    background-color: #e4e4e4;
+    background: radial-gradient(#eed8ff, #fefdff);
     transition: 0.3s;
     border: #ddbafd solid 2px;
     margin: 3rem 0;
@@ -79,7 +79,8 @@
     background: radial-gradient(#b7ff94, #73ff9d);
 }
 
-.create-artist-container{
+
+.create-artist-form{
     transition: 0.3s;
     background: linear-gradient(#73ff9d,#b7ff94);
     padding: 2rem;
@@ -87,12 +88,82 @@
     border-radius: 20px;
     display: flex;
     justify-content: center;
-}
-
-.create-artist-form{
-    display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 50%;
+}
+.create-artist-form:hover{
+    transition: 0.3s;
+    background: linear-gradient(#b3ff41,#b7ff94);
+    padding: 3rem;
+}
 
+.create-release-form{
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin: 3rem 3rem;
+    padding: 2rem;
+    border-radius: 20px;
+    transition: 0.3s;
+    background: linear-gradient(#4aff41, #7bc156);
+
+    label{
+        padding: 0 10px;
+    }
+
+    input{
+        height: 3rem;
+        width: 15rem;
+        padding: 0 1rem;
+    }
+}
+.create-release-form:hover{
+    transition: 0.3s;
+    background: linear-gradient(#b3ff41,#b7ff94);
+    padding: 3rem;
+}
+
+.release-submit-button{
+    position: absolute;
+    right: 2rem;
+}
+
+.edit-release-form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 3rem;
+
+    input{
+        height: 3rem;
+        padding: 0 2rem ;
+        border-radius: 10px;
+
+    }
+}
+
+.edit-artist-form{
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 3rem;
+    background: linear-gradient(#73ff9d,#b7ff94);
+    margin: 0 5rem 3rem 5rem;
+    border-radius: 20px;
+
+    input{
+        height: 3rem;
+        padding: 0 2rem ;
+        border-radius: 10px;
+
+    }
+}
+
+.edit-artist-form:hover{
+    transition: 0.3s;
+    background: linear-gradient(#b3ff41,#b7ff94);
+    padding: 3rem 3rem;
 }
