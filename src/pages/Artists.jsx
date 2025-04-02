@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 
 const Artists = () => {
 
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2RlYzE0YmE2MDQzOGFjMmZjZDBiOSIsInVzZXJuYW1lIjoib3NseW54IiwiaWF0IjoxNzQzNTc0NTYyLCJleHAiOjE3NDM1NzgxNjJ9.BuobHmGY_M_rnw5cF_952KR0iZfWOoO99r0lp8uYF9U"
+
     const [ artists, setArtists ] = useState([])
     const [ artistName, setArtistName ] =useState("")
     const [ artistAge, setArtistAge ] =useState("")
@@ -13,16 +15,53 @@ const Artists = () => {
         setShowCreateForm(!showCreateForm)
     }
 
-    const newArtist = {
-        name: artistName,
-        age: artistAge
+    const createArtist = async (e) => {
+        e.preventDefault()
+        console.log("create artist")
+        try{
+            await fetch("http://localhost:8000/artist/create",{
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify({
+                    name: artistName,
+                    age: artistAge
+                })
+            })
+                .then((response) => {
+                if (response.ok) {
+                    setArtistAge("")
+                    setArtistName("")
+                    loadArtist()
+                }})
+
+        } catch (error) {
+            console.log(error)
+            alert("erreur, veuillez réessayer")
+        } finally {
+            toggleCreateForm()
+        }
+
     }
 
+    const loadArtist = async () => {
+        try {
+            await fetch("http://localhost:8000/artist/all")
+                .then((response) => response.json())
+                .then((data) => setArtists(data))
+                .catch((error) => console.log(error))
+        } catch (error) {
+            alert("error")
+            console.log(error)
+        }
+    }
+
+
+
     useEffect(() => {
-        fetch("http://localhost:8000/artist/all")
-            .then((response) => response.json())
-            .then((data) => setArtists(data))
-            .catch((error) => console.log(error))
+        loadArtist()
     }, []);
 
     return(
@@ -34,21 +73,25 @@ const Artists = () => {
             </div>
             { showCreateForm && (
                 <div className="create-artist-container">
-                    <form className="create-artist-form" action="">
+                    <form className="create-artist-form">
                         <h2>Creer un nouvel artiste</h2>
                         <label >Name</label>
                         <input
                             type="text"
                             required
+                            value={artistName}
+                            onChange={(e)=> setArtistName(e.target.value)}
                         />
                         <label >Age</label>
                         <input
                             type="number"
                             required
+                            value={artistAge}
+                            onChange={(e) => setArtistAge(e.target.value)}
                         />
                         <div className="artist-action">
                             <button onClick={toggleCreateForm}>Annuler</button>
-                            <button>Creer</button>
+                            <button onClick={createArtist}>Creer</button>
                         </div>
                     </form>
                 </div>
@@ -69,4 +112,4 @@ const Artists = () => {
     )
 }
 
-export default Artists
+export default Artists;

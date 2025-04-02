@@ -1,5 +1,6 @@
 body{
   background: linear-gradient(#646cff, #b879f1);
+  min-height: 100vh;
 }
 
 #root {
@@ -12,6 +13,5 @@ body{
 h1{
   color: white;
   text-transform: uppercase;
-
 }
 
