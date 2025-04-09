@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginSignup from "./components/LoginSignup.jsx";
 import About from "./pages/About.jsx";
 import NoteFoundPage from "./pages/NoteFoundPage.jsx";
 import Artist from "./pages/Artist.jsx";
 import Artists from "./pages/Artists.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import {AuthProvider} from "./context/AuthContext.jsx";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +26,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "login",
-                element: <LoginSignup />
+                element: <Login />
+            },
+            {
+                path: "register",
+                element: <Register />
             },
             {
                 path: "about",
@@ -38,6 +44,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-      <RouterProvider router={router} />
+      <AuthProvider>
+          <RouterProvider router={router} />
+      </AuthProvider>
   </StrictMode>,
 )

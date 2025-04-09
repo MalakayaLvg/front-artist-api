@@ -4,8 +4,6 @@ import {useEffect, useState} from "react";
 
 const Artists = () => {
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2RlYzE0YmE2MDQzOGFjMmZjZDBiOSIsInVzZXJuYW1lIjoib3NseW54IiwiaWF0IjoxNzQzNTc0NTYyLCJleHAiOjE3NDM1NzgxNjJ9.BuobHmGY_M_rnw5cF_952KR0iZfWOoO99r0lp8uYF9U"
-
     const [ artists, setArtists ] = useState([])
     const [ artistName, setArtistName ] =useState("")
     const [ artistAge, setArtistAge ] =useState("")
@@ -18,6 +16,7 @@ const Artists = () => {
     const createArtist = async (e) => {
         e.preventDefault()
         console.log("create artist")
+        const token = localStorage.getItem('token');
         try{
             await fetch("http://localhost:8000/artist/create",{
                 method: "POST",

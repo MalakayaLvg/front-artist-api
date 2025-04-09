@@ -2,17 +2,15 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import "../css/Artists.css"
 import { useNavigate } from "react-router-dom";
-import HomeButton from "../components/HomeButton.jsx";
 
 const Artist = () => {
     const navigate = useNavigate()
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2RlYzE0YmE2MDQzOGFjMmZjZDBiOSIsInVzZXJuYW1lIjoib3NseW54IiwiaWF0IjoxNzQzNTgyOTQ2LCJleHAiOjE3NDM1ODY1NDZ9.JVygQwWdsFZLSA-cFX-B-oGX7Y8I0p4P_M6IedvIW28"
     const { id } = useParams()
     const [ artist, setArtist ] = useState([])
     const [ releases, setReleases ] = useState([])
     const [ showCreateRelease, setShowCreateRelease ] = useState(false)
     const [ showEditArtist, setShowEditArtist ] = useState(false)
-    const [ showEditRelease, setShowEditRelease ] = useState(false)
+    const [ editingReleaseId, setEditingReleaseId ] = useState(null)
     const [ releaseTitle , setReleaseTitle ] = useState("")
     const [ releaseDate , setReleaseDate ] = useState(0)
     const [ editReleaseTitle , setEditReleaseTitle ] = useState("")
@@ -23,10 +21,15 @@ const Artist = () => {
     // ARTIST
 
     const toggleEditArtist = () => {
-        setShowEditArtist(!showEditArtist)
-    }
+        if (!showEditArtist) {
+            setEditArtistName(artist.name || "");
+            setEditArtistAge(artist.age || "");
+        }
+        setShowEditArtist(!showEditArtist);
+    };
 
     const fetchArtist = () => {
+        const token = localStorage.getItem('token');
         fetch(`http://localhost:8000/artist/show/${id}`,{
             headers: {
                 Authorization: `Bearer ${token}`
@@ -41,6 +44,7 @@ const Artist = () => {
     }
 
     const deleteArtist = async () => {
+        const token = localStorage.getItem('token');
         try {
             await fetch(`http://localhost:8000/artist/delete/${id}`,{
                 method: "DELETE",
@@ -57,34 +61,39 @@ const Artist = () => {
         }
     }
 
-    const editArtist = (e,{id}) => {
-        e.preventDefault()
-        const releaseBody = {
-            title: editArtistName,
+    const editArtist = (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+
+        const artistBody = {
+            name: editArtistName,
             age: editArtistAge
-        }
-        fetch(`http://localhost:8000/artist/update/${id}`,{
+        };
+
+        fetch(`http://localhost:8000/artist/update/${id}`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type':'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(releaseBody)
+            body: JSON.stringify(artistBody)
         })
             .then(res => {
-                console.log(res)
-                setEditArtistName("")
-                setEditArtistAge("")
-                toggleEditArtist()
-                fetchArtist()
+                console.log(res);
+                setEditArtistName("");
+                setEditArtistAge("");
+                toggleEditArtist();
+                fetchArtist();
             })
-            .catch(err => console.log(err))
-    }
+            .catch(err => console.log(err));
+    };
+
 
     //RELEASE
 
     const createRelease = (e) => {
         e.preventDefault()
+        const token = localStorage.getItem('token');
         const releaseBody = {
             title: releaseTitle,
             releaseDate: releaseDate
@@ -109,6 +118,7 @@ const Artist = () => {
 
     const editRelease = (e,releaseId) => {
         e.preventDefault()
+        const token = localStorage.getItem('token');
         const releaseBody = {
             title: editReleaseTitle,
             releaseDate: editReleaseDate
@@ -135,12 +145,21 @@ const Artist = () => {
         setShowCreateRelease(!showCreateRelease)
     }
 
-    const toggleEditRelease = () => {
-        setShowEditRelease(!showEditRelease)
+    const toggleEditRelease = (releaseId = null, releaseTitle = "", releaseDate = 0) => {
+        if (releaseId) {
+            setEditingReleaseId(releaseId)
+            setEditReleaseTitle(releaseTitle)
+            setEditReleaseDate(releaseDate)
+        } else {
+            setEditingReleaseId(null)
+            setEditReleaseTitle("")
+            setEditReleaseDate(0)
+        }
     }
 
     const deleteRelease = (releaseId) => {
         console.log("delete")
+        const token = localStorage.getItem('token');
         fetch(`http://localhost:8000/release/delete/${releaseId}`, {
             method : "DELETE",
             headers: {
@@ -222,40 +241,45 @@ const Artist = () => {
                         )}
 
                     </div>
-                { releases.map((release) => (
-                    <div className="release-body" key={release._id}>
-                        { showEditRelease ?
-                            <form key={release._id} className="edit-release-form">
-                                <h3>Editer la sortie</h3>
-                                <input
-                                    type="text"
-                                    placeholder="nouveau titre"
-                                    value={editReleaseTitle}
-                                    onChange={(e) => setEditReleaseTitle(e.target.value)}
-                                />
-                                <input
-                                    type="number"
-                                    placeholder="nouvelle date"
-                                    value={editReleaseDate}
-                                    onChange={(e) => setEditReleaseDate(e.target.value)}
-                                />
-                                <div className="artist-action">
-                                    <button onClick={(e) => editRelease(e,release._id)}>Confirmer</button>
-                                    <button onClick={toggleEditRelease} >Annuler</button>
+                    { releases.map((release) => (
+                        <div className="release-body" key={release._id}>
+                            { editingReleaseId === release._id ?
+                                <form key={release._id} className="edit-release-form">
+                                    <h3>Editer la sortie</h3>
+                                    <input
+                                        type="text"
+                                        placeholder="nouveau titre"
+                                        value={editReleaseTitle}
+                                        onChange={(e) => setEditReleaseTitle(e.target.value)}
+                                    />
+                                    <input
+                                        type="number"
+                                        placeholder="nouvelle date"
+                                        value={editReleaseDate}
+                                        onChange={(e) => setEditReleaseDate(e.target.value)}
+                                    />
+                                    <div className="artist-action">
+                                        <button onClick={(e) => editRelease(e,release._id)}>Confirmer</button>
+                                        <button onClick={() => toggleEditRelease()} >Annuler</button>
+                                    </div>
+                                </form>
+                                :
+                                <div>
+                                    <h3>{release.title}</h3>
+                                    <span>{release.releaseDate}</span>
+                                    <div className="artist-action">
+                                        <button onClick={() => toggleEditRelease(release._id, release.title, release.releaseDate)}>
+                                            <i className="bi bi-pen"></i>
+                                        </button>
+                                        <button onClick={() => deleteRelease(release._id)}>
+                                            <i className="bi bi-trash3"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </form>
-                            :
-                            <div>
-                                <h3>{release.title}</h3>
-                                <span>{release.releaseDate}</span>
-                                <div className="artist-action">
-                                    <button onClick={toggleEditRelease}><i className="bi bi-pen"></i></button>
-                                    <button onClick={() => deleteRelease(release._id)} ><i className="bi bi-trash3"></i></button>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                ))}
+                            }
+                        </div>
+                    ))}
+
                 </div>
             </div>
         </>
