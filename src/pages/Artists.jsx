@@ -18,7 +18,7 @@ const Artists = () => {
         console.log("create artist")
         const token = localStorage.getItem('token');
         try{
-            await fetch("http://localhost:8000/artist/create",{
+            await fetch("https://back-artist.malakayalauvergnat.com/artist/create",{
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -47,7 +47,7 @@ const Artists = () => {
 
     const loadArtist = async () => {
         try {
-            await fetch("http://localhost:8000/artist/all")
+            await fetch("https://back-artist.malakayalauvergnat.com/artist/all")
                 .then((response) => response.json())
                 .then((data) => setArtists(data))
                 .catch((error) => console.log(error))

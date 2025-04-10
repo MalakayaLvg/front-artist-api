@@ -12,7 +12,7 @@ function Register() {
     async function handleRegister(e) {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/register', {
+            const response = await axios.post('https://back-artist.malakayalauvergnat.com/register', {
                 username,
                 password
             })

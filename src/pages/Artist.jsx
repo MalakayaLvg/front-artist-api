@@ -30,7 +30,7 @@ const Artist = () => {
 
     const fetchArtist = () => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/artist/show/${id}`,{
+        fetch(`https://back-artist.malakayalauvergnat.com/artist/show/${id}`,{
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -46,7 +46,7 @@ const Artist = () => {
     const deleteArtist = async () => {
         const token = localStorage.getItem('token');
         try {
-            await fetch(`http://localhost:8000/artist/delete/${id}`,{
+            await fetch(`https://back-artist.malakayalauvergnat.com/artist/delete/${id}`,{
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -70,7 +70,7 @@ const Artist = () => {
             age: editArtistAge
         };
 
-        fetch(`http://localhost:8000/artist/update/${id}`, {
+        fetch(`https://back-artist.malakayalauvergnat.com/artist/update/${id}`, {
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const Artist = () => {
             title: releaseTitle,
             releaseDate: releaseDate
         }
-        fetch(`http://localhost:8000/release/add/${id}`,{
+        fetch(`https://back-artist.malakayalauvergnat.com/release/add/${id}`,{
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -123,7 +123,7 @@ const Artist = () => {
             title: editReleaseTitle,
             releaseDate: editReleaseDate
         }
-        fetch(`http://localhost:8000/release/edit/${releaseId}`,{
+        fetch(`https://back-artist.malakayalauvergnat.com/release/edit/${releaseId}`,{
             method: 'PUT',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -160,7 +160,7 @@ const Artist = () => {
     const deleteRelease = (releaseId) => {
         console.log("delete")
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:8000/release/delete/${releaseId}`, {
+        fetch(`https://back-artist.malakayalauvergnat.com/release/delete/${releaseId}`, {
             method : "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`
